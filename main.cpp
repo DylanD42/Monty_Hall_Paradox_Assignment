@@ -2,17 +2,18 @@
 #include <iostream>
 #include <cstdlib> // for rand and srand
 #include <ctime>   // for time()
-
+#include <iomanip> // for set precision
 using namespace std;
 
 bool monty_hall(int userSelectedDoor);
 //void gameshowPrint(int userDoor, int openedDoor);
-//void simulate(int num_iterations);
+void simulate(int num_iterations);
 
 int main() {
   
   srand(time(0));
-  int userChoice;
+  int userChoice, simulationSize;
+  
   cout << "Welcome to the Monty Hall Paradox!" << endl
        << endl << "To start out, what would you like to do?" << endl;
   do{
@@ -35,7 +36,11 @@ int main() {
       break;
     }
     case 2:{
-      cout << " You chose 2 ";
+      cout << " You chose 2 " << endl
+	   << "How many times do you want to simulate? "
+	   << endl << ": ";
+      cin >> simulationSize;
+      simulate(simulationSize);
       break;
     }
     case 3:{
@@ -129,11 +134,109 @@ bool monty_hall(int userSelectedDoor){
   
   
 }
-/*
 void simulate(int num_iterations){
-  for(int i = 0; i < num_iterations; i++){
-    monty_hall();
+  int wins, losses, total, switch_or_stay, userDoor, carDoor, openedDoor, otherDoor;
+  wins = losses = total = 0;
+  userDoor = 1; // users door will be 1 for every case;
+  
+  cout << "What would you like to do for all cases? " << endl <<"1: Stay with the original door" << endl << "2: Switch to the unopened door?" << endl << endl << ": ";
+  cin >> switch_or_stay;
+  switch (switch_or_stay){
+  case 1:{
+    cout << "You decided to stay." << endl;
+    break;
+      
   }
-};
+  case 2:{
+    cout << "You decided to switch." << endl;
+    
+    break;
+  }
+  default:{
+    cout << "That isn't a option." << endl;
+    break;
+  }}
+  //int wins, losses, total, switch_or_stay, userDoor, carDoor, openedDoor, otherDoor;
+  for(int i = 0; i < num_iterations; i++){
+    total++;
+    carDoor = 1 + (rand()%3);
 
-  */
+    if (userDoor == carDoor){
+      if (userDoor == 3){
+	otherDoor = (rand()%2)+1;
+      }
+      else{
+	otherDoor = userDoor + 1;
+      }
+    }
+    if (userDoor != carDoor){
+      if((userDoor + carDoor) == 5){
+	openedDoor = 1;
+	if(userDoor == 2){
+	  otherDoor = 3;
+	}
+	else if(userDoor == 3){
+	  otherDoor = 2;
+	}
+      }
+      else if((userDoor + carDoor) == 4){
+	openedDoor = 2;
+	if(userDoor == 1){
+	  otherDoor = 3;
+	}
+	else if(userDoor == 3){
+	  otherDoor = 1;
+	}
+      }
+      else if((userDoor + carDoor) == 3){
+	openedDoor = 3;
+	if (userDoor == 1){
+	  otherDoor = 2;
+	}
+	else if (userDoor == 2){
+	  otherDoor = 1;
+	}
+      }
+    }
+    
+    
+    if (switch_or_stay == 1){
+      if(userDoor == carDoor){
+	//cout << "WIN!" << endl;
+	wins++;
+      }
+      else{
+	//cout << "LOSE!" << endl;
+	losses++;
+      }
+    }
+    
+    else if(switch_or_stay == 2){
+      userDoor = otherDoor;
+      if(userDoor == carDoor){
+	//cout << "WIN!" << endl;
+	wins++;
+      }
+      else{
+	//cout << "LOSE!" << endl;
+	losses++;
+      }
+    }
+    
+  }
+  double winPercent  = wins*100.000000/total;
+  double lossPercent = losses*100.00000/total;
+  
+  cout << "Wins: " << wins << endl
+       << "Losses: " << losses << endl
+       << "Total: " << total << endl;
+  cout << fixed << setprecision(6);
+  cout << "Win %: " << winPercent << '%' <<endl
+       << "Loss %: " << lossPercent << '%' << endl << endl;
+  cout << fixed << setprecision(2);
+
+  
+  
+}
+
+ 
