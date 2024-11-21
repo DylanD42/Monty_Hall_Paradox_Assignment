@@ -6,6 +6,7 @@
 using namespace std;
 
 bool monty_hall(int userSelectedDoor);
+//void gameshowPrint(int userDoor, int openedDoor);
 //void simulate(int num_iterations);
 
 int main() {
@@ -30,7 +31,7 @@ int main() {
       cout << "What door do you want to select? 1, 2 or 3?" << endl << ": ";
       cin >> userDoor;
       bool outcome = monty_hall(userDoor);
-      cout << endl << endl <<outcome << endl;
+      cout << endl << endl << outcome << endl;
       break;
     }
     case 2:{
@@ -52,7 +53,7 @@ int main() {
   
 bool monty_hall(int userSelectedDoor){
   int carDoor = 1 + (rand()%3);
-  int shownDoor;
+  int shownDoor, unopenedDoor;
   if (userSelectedDoor == carDoor){
     if (userSelectedDoor == 3){
       shownDoor = (rand()%2)+1;
@@ -64,19 +65,70 @@ bool monty_hall(int userSelectedDoor){
   if (userSelectedDoor != carDoor){
     if((userSelectedDoor + carDoor) == 5){
       shownDoor = 1;
+      if(userSelectedDoor == 2){
+	unopenedDoor = 3;
+      }
+      else if(userSelectedDoor == 3){
+	unopenedDoor = 2;
+      }
     }
     else if((userSelectedDoor + carDoor) == 4){
       shownDoor = 2;
+      if(userSelectedDoor == 1){
+	unopenedDoor = 3;
+      }
+      else if(userSelectedDoor == 3){
+	unopenedDoor = 1;
+      }
     }
     else if((userSelectedDoor + carDoor) == 3){
       shownDoor = 3;
+      if (userSelectedDoor == 1){
+	unopenedDoor = 2;
+      }
+      else if (userSelectedDoor == 2){
+	unopenedDoor = 1;
+      }
     }
   }
   cout << "You chose door: " << userSelectedDoor << endl
-       << "Dealer opened door: " << shownDoor << endl
-       << "The car is behind door: " << carDoor;
-  return true;
-};
+       << "Dealer opened door: " << shownDoor << endl << endl;
+    //<< "The car is behind door: " << carDoor;
+  int userSecondChoice;
+  cout << "What would you like to do? " << endl <<"1: Stay with your original door" << endl << "2: Switch to the unopened door?" << endl << endl << ": ";
+  cin >> userSecondChoice;
+  switch (userSecondChoice){
+  case 1:{
+    cout << "You decided to stay." << endl;
+    break;
+      
+  }
+  case 2:{
+    cout << "You decided to switch." << endl;
+    userSelectedDoor = unopenedDoor;
+    break;
+  }
+  default:{
+    cout << "That isn't a option." << endl;
+    unopenedDoor = 5;
+    break;
+  }}
+  cout << "Users Door: " << userSelectedDoor << endl;
+  cout << "Unopened Door: " << unopenedDoor << endl;
+  cout << "Opened Door: " << shownDoor << endl;
+  cout << "Car Door: " << carDoor << endl;
+  
+  if(userSelectedDoor == unopenedDoor){
+    cout << "WIN!" << endl;
+    return true;
+  }
+  else{
+    cout << "LOSE!" << endl;
+    return false;
+  }
+  
+  
+}
 /*
 void simulate(int num_iterations){
   for(int i = 0; i < num_iterations; i++){
